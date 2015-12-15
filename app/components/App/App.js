@@ -4,8 +4,6 @@
 
 import React, { Component } from 'react';
 import CSSModules from 'react-css-modules';
-import Header from '../Header';
-import Footer from '../Footer';
 
 let styles = '';
 if (process.env.BROWSER) styles = require('./App.css');
@@ -13,7 +11,6 @@ if (process.env.BROWSER) styles = require('./App.css');
 const DOM = React.DOM, body = DOM.body, div = DOM.div, script = DOM.script;
 
 class App extends Component {
-
     render() {
         return (
             <html className="no-js" lang="">
@@ -24,9 +21,7 @@ class App extends Component {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </head>
             <body>
-            <Header />
             <div id="app" dangerouslySetInnerHTML={{ __html: this.props.page }} />
-            <Footer/>
             <script src={this.props.bundle}></script>
             </body>
             </html>

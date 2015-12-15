@@ -6,7 +6,7 @@ var postcssImport = require('postcss-import');
 
 
 module.exports = {
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'source-map',
     entry: [
         'webpack-hot-middleware/client',
         './app/client.js'
