@@ -8,8 +8,7 @@ var postcssImport = require('postcss-import');
 module.exports = {
     devtool: 'cheap-module-eval-source-map',
     entry: [
-        'webpack-dev-server/client?http://localhost:8080',
-        'webpack/hot/only-dev-server',
+        'webpack-hot-middleware/client',
         './app/client.js'
     ],
     output: {
@@ -22,7 +21,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                loaders: ['react-hot', 'babel']
+                loader: 'babel',
+                query: {
+                    presets: ['react', 'es2015']
+                }
             },
             {
                 test: /\.css$/,
@@ -36,7 +38,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.OccurenceOrderPlugin(),
+        //new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({

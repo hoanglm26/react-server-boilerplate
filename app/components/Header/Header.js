@@ -2,9 +2,13 @@
  * Created by khaip on 12/14/2015.
  */
 
-import React from 'react';
+import React, { Component } from 'react';
+import CSSModules from 'react-css-modules';
 
-class Header extends React.Component {
+let styles = '';
+if (process.env.BROWSER) styles = require('./Header.css');
+
+class Header extends Component {
 
     render() {
         return(
@@ -13,4 +17,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default CSSModules(Header, styles);

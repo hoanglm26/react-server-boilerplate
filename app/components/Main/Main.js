@@ -14,7 +14,7 @@ class Main extends React.Component {
     render(){
         return (
             <div>
-                Hello Main
+                Hello 123
                 <Link to={`/user`}>User</Link>
             </div>
         )

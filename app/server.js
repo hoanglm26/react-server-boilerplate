@@ -9,7 +9,8 @@ import express from 'express';
 import morgan from 'morgan';
 
 import webpack from 'webpack';
-import webpackDevServer from 'webpack-dev-server';
+import webpackMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from '../webpack.config.js';
 
 import React from 'react';
@@ -20,7 +21,6 @@ import routes from './config/Routes';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const port = isProduction ? process.env.PORT : 3000;
-const devPort = isProduction ? process.env.DEV_PORT : 8080;
 const root = path.normalize(__dirname + '/..');
 const app = express();
 
@@ -28,20 +28,14 @@ app.use(morgan('short'));
 
 if (!isProduction) {
     const compiler = webpack(webpackConfig);
-
-    const devServer = new webpackDevServer(compiler, {
-        publicPath: webpackConfig.output.publicPath,
-        hot: true,
+    app.use(webpackMiddleware(compiler, {
         noInfo: true,
+        publicPath: webpackConfig.output.publicPath,
         stats: {
             colors: true
-        },
-        proxy: {
-            '*': 'http://localhost:3000'
         }
-    });
-
-    devServer.listen(8080, 'localhost', function() {});
+    }));
+    app.use(webpackHotMiddleware(compiler));
 } else {
     app.use(express.static(path.join(root, 'public')));
 }
@@ -70,5 +64,5 @@ app.use((req, res) => {
 });
 
 var server = app.listen(port, function () {
-    console.log('App listening at %s', devPort);
+    console.log('App listening at %s', port);
 });
