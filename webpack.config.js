@@ -21,9 +21,25 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
+                include: path.join(__dirname, 'app'),
                 loader: 'babel',
                 query: {
-                    presets: ['react', 'es2015']
+                    optional: ['runtime'],
+                    plugins: ['react-transform'],
+                    extra: {
+                        'react-transform': {
+                            transforms: [
+                                {
+                                    transform: 'react-transform-hmr',
+                                    imports: ['react'],
+                                    locals: ['module']
+                                }, {
+                                    transform: 'react-transform-catch-errors',
+                                    imports: ['react', 'redbox-react']
+                                }
+                            ]
+                        }
+                    }
                 }
             },
             {

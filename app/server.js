@@ -7,6 +7,9 @@
 import path from 'path';
 import express from 'express';
 import morgan from 'morgan';
+import bodyParser from 'body-parser';
+import http from 'http';
+import chokidar from 'chokidar';
 
 import webpack from 'webpack';
 import webpackMiddleware from 'webpack-dev-middleware';
@@ -36,6 +39,35 @@ if (!isProduction) {
         }
     }));
     app.use(webpackHotMiddleware(compiler));
+
+    const watcher = chokidar.watch(path.join(root, 'app'), {
+        ignored: /[\/\\]\./}
+    ).on('all', function(event, path) {
+        console.log(event, path);
+        Object.keys(require.cache).forEach(function(id) {
+            if(/\\app\\/g.test(id)) {
+                console.log(id);
+                delete require.cache[id];
+            }
+            if (/\/app\//.test(id)) {
+                console.log(id);
+            }
+        });
+    });
+
+    //watcher.on('ready', function() {
+    //    watcher.on('all', function() {
+    //        //console.log("Clearing /server/ module cache from server");
+    //        Object.keys(require.cache).forEach(function(id) {
+    //            if(/\\app\\/g.test(id)) {
+    //                console.log(id);
+    //                delete require.cache[id];
+    //            }
+    //        });
+    //    });
+    //});
+
+
 } else {
     app.use(express.static(path.join(root, 'public')));
 }
@@ -63,6 +95,6 @@ app.use((req, res) => {
     })
 });
 
-var server = app.listen(port, function () {
+http.createServer(app).listen(port, function() {
     console.log('App listening at %s', port);
 });
