@@ -9,7 +9,7 @@ class Home extends Component {
     render() {
         return(
             <div>
-                This is Homepage
+                This is Homepage 123
                 <Link to={`/user`}>Go to User's page</Link>
             </div>
         )

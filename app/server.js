@@ -40,39 +40,25 @@ if (!isProduction) {
     }));
     app.use(webpackHotMiddleware(compiler));
 
-    const watcher = chokidar.watch(path.join(root, 'app'), {
-        ignored: /[\/\\]\./}
-    ).on('all', function(event, path) {
-        console.log(event, path);
+    const watcher = chokidar.watch(path.join(root, 'app'))
+    .on('all', function(event, path) {
+        //console.log(event, path);
         Object.keys(require.cache).forEach(function(id) {
-            if(/\\app\\/g.test(id)) {
-                console.log(id);
-                delete require.cache[id];
-            }
-            if (/\/app\//.test(id)) {
-                console.log(id);
-            }
+            delete require.cache[id];
         });
     });
-
-    //watcher.on('ready', function() {
-    //    watcher.on('all', function() {
-    //        //console.log("Clearing /server/ module cache from server");
-    //        Object.keys(require.cache).forEach(function(id) {
-    //            if(/\\app\\/g.test(id)) {
-    //                console.log(id);
-    //                delete require.cache[id];
-    //            }
-    //        });
-    //    });
-    //});
-
 
 } else {
     app.use(express.static(path.join(root, 'public')));
 }
 
-app.use((req, res) => {
+let eRouter = express.Router();
+
+eRouter.get('/123', (req, res) => {
+    res.send("You are a winner test");
+});
+
+app.use((req, res, next) => {
     match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
         if (error) {
             res.status(500).send(error.message)
@@ -90,7 +76,7 @@ app.use((req, res) => {
             res.status(200).send('<!doctype html>\n' + html);
         }
         else {
-            res.status(404).send('Not found');
+            next();
         }
     })
 });

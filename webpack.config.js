@@ -24,6 +24,7 @@ module.exports = {
                 include: path.join(__dirname, 'app'),
                 loader: 'babel',
                 query: {
+                    stage: 0,
                     optional: ['runtime'],
                     plugins: ['react-transform'],
                     extra: {
