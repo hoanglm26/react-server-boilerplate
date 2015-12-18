@@ -21,6 +21,7 @@ import ReactDOM from 'react-dom/server'
 import { match, RoutingContext} from 'react-router'
 import App from './components/App';
 import routes from './config/Routes';
+import routesApi from './api';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const port = isProduction ? process.env.PORT : 3000;
@@ -40,23 +41,20 @@ if (!isProduction) {
     }));
     app.use(webpackHotMiddleware(compiler));
 
-    const watcher = chokidar.watch(path.join(root, 'app'))
-    .on('all', function(event, path) {
-        //console.log(event, path);
-        Object.keys(require.cache).forEach(function(id) {
-            delete require.cache[id];
+    const watcher = chokidar.watch('./app/api');
+
+    watcher.on('ready', () => {
+        watcher.on('all', function(event, path) {
+            console.log('clear cache');
+            Object.keys(require.cache).forEach(function(id) {
+                delete require.cache[id];
+            });
         });
     });
 
 } else {
     app.use(express.static(path.join(root, 'public')));
 }
-
-let eRouter = express.Router();
-
-eRouter.get('/123', (req, res) => {
-    res.send("You are a winner test");
-});
 
 app.use((req, res, next) => {
     match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
@@ -79,6 +77,10 @@ app.use((req, res, next) => {
             next();
         }
     })
+});
+
+app.use((req, res, next) => {
+    routesApi(req, res, next);
 });
 
 http.createServer(app).listen(port, function() {

@@ -1,8 +1,10 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _react = require('react');
 
@@ -10,31 +12,30 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
-var _App = require('../components/App');
+var _componentsApp = require('../components/App');
 
-var _App2 = _interopRequireDefault(_App);
+var _componentsApp2 = _interopRequireDefault(_componentsApp);
 
-var _Main = require('../components/Main');
+var _componentsMain = require('../components/Main');
 
-var _Main2 = _interopRequireDefault(_Main);
+var _componentsMain2 = _interopRequireDefault(_componentsMain);
 
-var _Home = require('../components/Home');
+var _componentsHome = require('../components/Home');
 
-var _Home2 = _interopRequireDefault(_Home);
+var _componentsHome2 = _interopRequireDefault(_componentsHome);
 
-var _User = require('../components/User');
+var _componentsUser = require('../components/User');
 
-var _User2 = _interopRequireDefault(_User);
+var _componentsUser2 = _interopRequireDefault(_componentsUser);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _react2.default.createElement(
+exports['default'] = _react2['default'].createElement(
     _reactRouter.Router,
     null,
-    _react2.default.createElement(
+    _react2['default'].createElement(
         _reactRouter.Route,
-        { component: _Main2.default },
-        _react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/user', component: _User2.default })
+        { component: _componentsMain2['default'] },
+        _react2['default'].createElement(_reactRouter.Route, { path: '/', component: _componentsHome2['default'] }),
+        _react2['default'].createElement(_reactRouter.Route, { path: '/user', component: _componentsUser2['default'] })
     )
 );
+module.exports = exports['default'];
