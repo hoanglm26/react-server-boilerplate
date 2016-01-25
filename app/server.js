@@ -41,14 +41,13 @@ if (!isProduction) {
     }));
     app.use(webpackHotMiddleware(compiler));
 
-    const watcher = chokidar.watch('./app/api');
+    const watcher = chokidar.watch('./app');
 
-    watcher.on('ready', () => {
-        watcher.on('all', function(event, path) {
-            console.log('clear cache');
-            Object.keys(require.cache).forEach(function(id) {
-                delete require.cache[id];
-            });
+    watcher.on('all', function(event, path) {
+        console.log('clear cache');
+        Object.keys(require.cache).forEach(function(id) {
+            //console.log(id);
+            delete require.cache[require.resolve(id)];
         });
     });
 

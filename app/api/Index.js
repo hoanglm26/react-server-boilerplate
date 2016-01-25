@@ -7,7 +7,7 @@ import express from 'express';
 const Router = express.Router();
 
 Router.get('/123', (req, res) => {
-    res.send("You are a winner 123 456 ");
+    res.send("You are a winner  123 456");
 });
 
 export default Router;
